@@ -1,0 +1,4 @@
+Control Corruption does exactly what it states. How it achieves this is rather... weird. It just slaps a bunch of clay everywhere that corruption spawns.
+Thanks to GabeHasWon for worldgen stuff
+Hardmode Corruption prevention not implemented yet - to be worked on
+Crimson spread prevention not implemented yet - to be worked on
