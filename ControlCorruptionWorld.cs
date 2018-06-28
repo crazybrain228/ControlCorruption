@@ -29,7 +29,6 @@ namespace ControlCorruption
                     progress.Message = "Generating Clay Clumps";
                     makeClayClumps(0, Main.maxTilesX / 2);
                     makeClayClumps(Main.maxTilesX / 2, Main.maxTilesX);
-
                 }));
             }
         }
@@ -71,7 +70,7 @@ namespace ControlCorruption
                 {
                     Tile tileType = Framing.GetTileSafely(worldScanX, worldScanY);
 
-                    if (tileType.active() && (tileType.type == TileID.CorruptGrass || tileType.type == TileID.CorruptIce || tileType.type == TileID.CorruptHardenedSand || tileType.type == TileID.CorruptSandstone || tileType.type == TileID.Ebonstone || tileType.type == TileID.Ebonsand || tileType.type == TileID.EbonstoneBrick))
+                    if (tileType.active() && (tileType.type == TileID.CorruptGrass || tileType.type == TileID.CorruptIce || tileType.type == TileID.CorruptHardenedSand || tileType.type == TileID.CorruptSandstone || tileType.type == TileID.Ebonstone || tileType.type == TileID.Ebonsand || tileType.type == TileID.EbonstoneBrick || tileType.type == TileID.Crimstone || tileType.type == TileID.Crimsand || tileType.type == TileID.CrimtaneBrick || tileType.type == TileID.CrimsonHardenedSand || tileType.type == TileID.CrimsonSandstone || tileType.type == TileID.FleshBlock || tileType.type == TileID.FleshGrass || tileType.type == TileID.FleshIce))
                     {
                         listX.Add(worldScanX);
                         listY.Add(worldScanY);
