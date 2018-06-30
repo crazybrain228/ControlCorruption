@@ -21,15 +21,151 @@ namespace ControlCorruption
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalweight)
         {
             int finalCleanupIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
+            int runs = 0;
+            int worldChunkSize = Config.worldChunkSize;
 
             if (finalCleanupIndex != -1)
             {
                 tasks.Insert(finalCleanupIndex + 1, new PassLegacy("Clay Clumps", delegate (GenerationProgress progress)
                 {
                     progress.Message = "Generating Clay Clumps";
-                    makeClayClumps(0, Main.maxTilesX / 2);
-                    makeClayClumps(Main.maxTilesX / 2, Main.maxTilesX);
+                    while (runs < Main.maxTilesX / worldChunkSize)
+                    {
+                        makeClayClumps(runs * worldChunkSize, (runs + 1) * worldChunkSize);
+                        runs++;
+                    }
+                    //makeClayClumps(0, Main.maxTilesX / 2);
+                    //makeClayClumps(Main.maxTilesX / 2, Main.maxTilesX);
                 }));
+            }
+        }
+
+        public override void ModifyHardmodeTasks(List<GenPass> list)
+        {
+            if (Config.dontGenerateHardmodeV)
+            {
+                int hardmodeVIndexCorruption = list.FindIndex(genpass => genpass.Name.Equals("Hardmode Evil"));
+                int hardmodeVIndexHallowed = list.FindIndex(genpass => genpass.Name.Equals("Hardmode Good"));
+
+                if (hardmodeVIndexCorruption != -1 && hardmodeVIndexHallowed != -1)
+                {
+                    list[hardmodeVIndexCorruption] = new PassLegacy("Doing Nothing", delegate { });
+                    list[hardmodeVIndexHallowed] = new PassLegacy("Doing Nothing", delegate { });
+                }
+            }
+            else
+            {
+                int hardmodeIndex = list.FindIndex(genpass => genpass.Name.Equals("Hardmode Walls"));
+                int runs = 0;
+                int worldChunkSize = Config.worldChunkSize;
+
+                if (hardmodeIndex != -1)
+                {
+                    list.Insert(hardmodeIndex + 1, new PassLegacy("Hardmode Clay Clumps", delegate
+                    {
+                        while (runs < Main.maxTilesX / worldChunkSize)
+                        {
+                            makeClayClumps(runs * worldChunkSize, (runs + 1) * worldChunkSize);
+                            runs++;
+                        }
+                    }));
+                }
+            }
+
+            int hardmodeAnnouncementIndex = list.FindIndex(genpass => genpass.Name.Equals("Hardmode Announcment"));
+            int numberOfAltarsToSmash = Config.timesToRunHardmodeOreGen;
+            int runs2 = 0;
+            int somethingIDKWhat = 0;
+            int oreToSpawn = 0;
+            double height = 0;
+            float k = 0;
+            int oreTier1 = Config.hardmodeOreTier1;
+            int oreTier2 = Config.hardmodeOreTier2;
+            int oreTier3 = Config.hardmodeOreTier3;
+
+            if (hardmodeAnnouncementIndex != -1)
+            {
+                list.Insert(hardmodeAnnouncementIndex + 1, new PassLegacy("Hardmode Ores", delegate
+                {
+                    if (!Config.disableAutoHardmodeOreGen)
+                    {
+                        runs2 = 0;
+                        while (runs2 < numberOfAltarsToSmash)
+                        {
+                            int num = runs2 % 3;
+                            int num2 = runs2 / 3 + 1;
+                            float num3 = (float)(Main.maxTilesX / 4200);
+                            int num4 = 1 - num;
+                            num3 = num3 * 310f - (float)(85 * num);
+                            num3 *= 0.85f;
+                            num3 /= (float)num2;
+                            switch (num)
+                            {
+                                case 0:
+                                    {
+                                        if (oreTier1 == 221)
+                                        {
+                                            num3 *= 0.9f;
+                                        }
+                                        num = oreTier1;
+                                        num3 *= 1.05f;
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        if (oreTier2 == 222)
+                                        {
+                                            num3 *= 0.9f;
+                                        }
+                                        num = oreTier2;
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        if (oreTier3 == 223)
+                                        {
+                                            num3 *= 0.9f;
+                                        }
+                                        num = oreTier3;
+                                        break;
+                                    }
+                            }
+                            for (int whatever = 0; (float)whatever < num3; whatever++)
+                            {
+                                int i2 = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                                double num8 = Main.worldSurface;
+
+                                if (num == 108 || num == 222)
+                                {
+                                    num8 = Main.rockLayer;
+                                }
+                                if (num == 111 || num == 223)
+                                {
+                                    num8 = (Main.rockLayer + Main.rockLayer + (double)Main.maxTilesY) / 3.0;
+                                }
+
+                                int j2 = WorldGen.genRand.Next((int)num8, Main.maxTilesY - 150);
+                                WorldGen.OreRunner(i2, j2, (double)WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4), (ushort)num);
+                            }
+                            runs2++;
+                        }
+                        Main.NewText("Your world has been blessed with hardmode ores equivalent to " + Config.timesToRunHardmodeOreGen + " altars smashed!", 200, 200, 55);
+                    }
+                }));
+            }
+        }
+
+        private bool checkTile(Tile tileToCheck)
+        {
+            if (tileToCheck.active() && (tileToCheck.type == TileID.CorruptGrass || tileToCheck.type == TileID.CorruptIce || tileToCheck.type == TileID.CorruptHardenedSand || tileToCheck.type == TileID.CorruptSandstone || tileToCheck.type == TileID.Ebonstone || tileToCheck.type == TileID.Ebonsand || tileToCheck.type == TileID.EbonstoneBrick
+                || tileToCheck.type == TileID.Crimstone || tileToCheck.type == TileID.Crimsand || tileToCheck.type == TileID.CrimtaneBrick || tileToCheck.type == TileID.CrimsonHardenedSand || tileToCheck.type == TileID.CrimsonSandstone || tileToCheck.type == TileID.FleshBlock || tileToCheck.type == TileID.FleshGrass || tileToCheck.type == TileID.FleshIce
+                || tileToCheck.type == TileID.HallowedGrass || tileToCheck.type == TileID.HallowedIce || tileToCheck.type == TileID.HallowHardenedSand || tileToCheck.type == TileID.HallowSandstone || tileToCheck.type == TileID.Pearlsand || tileToCheck.type == TileID.Pearlstone || tileToCheck.type == TileID.PearlstoneBrick))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -43,7 +179,7 @@ namespace ControlCorruption
                 sizeCounter2 = 0;
                 while (sizeCounter2 < size)
                 {
-                    Main.tile[x + sizeCounter, y + sizeCounter2].type = TileID.ClayBlock;
+                    Main.tile[x + sizeCounter - size, y + sizeCounter2 - size].type = TileID.ClayBlock;
                     sizeCounter2++;
                 }
 
@@ -55,9 +191,7 @@ namespace ControlCorruption
         {
             int worldScanX = Point1;
             int worldScanY = 0;
-            int size = 10;
-            int i = 0;
-            int j = 0;
+            int size = Config.claySize;
             int k = 0;
 
             List<int> listX = new List<int>();
@@ -70,7 +204,7 @@ namespace ControlCorruption
                 {
                     Tile tileType = Framing.GetTileSafely(worldScanX, worldScanY);
 
-                    if (tileType.active() && (tileType.type == TileID.CorruptGrass || tileType.type == TileID.CorruptIce || tileType.type == TileID.CorruptHardenedSand || tileType.type == TileID.CorruptSandstone || tileType.type == TileID.Ebonstone || tileType.type == TileID.Ebonsand || tileType.type == TileID.EbonstoneBrick || tileType.type == TileID.Crimstone || tileType.type == TileID.Crimsand || tileType.type == TileID.CrimtaneBrick || tileType.type == TileID.CrimsonHardenedSand || tileType.type == TileID.CrimsonSandstone || tileType.type == TileID.FleshBlock || tileType.type == TileID.FleshGrass || tileType.type == TileID.FleshIce))
+                    if (checkTile(tileType))
                     {
                         listX.Add(worldScanX);
                         listY.Add(worldScanY);
@@ -79,6 +213,8 @@ namespace ControlCorruption
                 }
                 worldScanX++;
             }
+
+            //rectangular clay block structure surrounding corruption/crimson structure
 
             int finalXLeft = 0;
             int finalXRight = 0;
@@ -119,12 +255,14 @@ namespace ControlCorruption
 
             if (listX.Count > 0)
             {
-                while (writtenY > WorldGen.worldSurfaceLow)
+                writtenY = finalYBottom;
+                while (writtenY > finalYTop)
                 {
                     insertClayClump(finalXLeft, writtenY, size);
                     //WorldGen.TileRunner(finalXLeft, writtenY, size, 1, TileID.ClayBlock, false, 0f, 0f, true, true);
                     writtenY--;
                 }
+                writtenX = finalXLeft;
                 while (writtenX < finalXRight)
                 {
                     insertClayClump(writtenX, finalYBottom, size);
@@ -132,11 +270,20 @@ namespace ControlCorruption
                     writtenX++;
                 }
                 writtenY = finalYBottom;
-                while (writtenY > WorldGen.worldSurfaceLow)
+                while (writtenY > finalYTop)
                 {
                     insertClayClump(finalXRight, writtenY, size);
                     //WorldGen.TileRunner(finalXRight, writtenY, size, 1, TileID.ClayBlock, false, 0f, 0f, true, true);
                     writtenY--;
+                }
+                writtenX = finalXLeft;
+                while (writtenX < finalXRight)
+                {
+                    //if (finalYTop > WorldGen.rockLayer)
+                    //{
+                    insertClayClump(writtenX, finalYTop, size);
+                    //}
+                    writtenX++;
                 }
             }
         }
