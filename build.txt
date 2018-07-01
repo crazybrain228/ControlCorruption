@@ -1,3 +1,7 @@
 author = Left Click
-version = 0.1.1
-displayName = Control Corruption
+version = 0.4.2
+displayName = Control Corruption / Crimson
+homepage = https://forums.terraria.org/index.php?threads/control-corruption-with-lots-of-clay.70536/
+includeSource = true
+hideCode = false
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
