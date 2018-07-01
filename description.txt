@@ -1,4 +1,38 @@
 Control Corruption does exactly what it states. How it achieves this is rather... weird. It just slaps a bunch of clay everywhere that corruption spawns.
 Thanks to GabeHasWon for worldgen stuff
-Hardmode Corruption prevention not implemented yet - to be worked on
-Crimson spread prevention not implemented yet - to be worked on
+Hardmode Corruption/Crimson/Hallowed will be surrounded with a layer of clay upon generation
+Crimson will also be surrounded by a layer of clay upon worldgen
+Hardmode ores will auto generate upon entering hardmode. By default 21 altars worth of ore will spawn. Can be changed in config.
+Hardmode ores auto generating can also be turned off in config
+
+Refer to forum post (Mod home page) for complete explanation of all config options
+
+v0.4.2
+Fixed a small mistake I made
+
+v0.4.1
+updated description a little bit
+
+v0.4.0
+Added hardmode ore gen without smashing altars, Hardmode V Will now be boxed off into individual boxes underground - box size depends on how big your world chunk setting is. Refer to forum post for example picture
+
+v0.3.2
+Added a config to turn off hardmode V Generation entirely
+
+v0.3.1
+Hardmode V is boxed off underground now Any surface areas are left alone. Refer to forum post for images if you are confused
+
+v0.3.0
+Added hardmode Corruption/Crimson/Hallowed V Containment with a layer of clay
+
+v0.2.4
+Split the world up into more chunks - added a config option for how many blocks per chunk the world should be split up into
+
+v0.2.3
+Added a config file for how big the clay path should be
+
+v0.2.2
+Made source code availiable upon extract
+
+v0.2.1
+Added Crimson Compatability
