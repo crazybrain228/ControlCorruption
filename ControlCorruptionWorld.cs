@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ControlCorruption
 {
-    public class ControlCorrution : ModWorld
+    public class GenerateClayLayerWorld : ModWorld
     {
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalweight)
         {
@@ -151,11 +151,14 @@ namespace ControlCorruption
                         }
                         Main.NewText("Your world has been blessed with hardmode ores equivalent to " + Config.timesToRunHardmodeOreGen + " altars smashed!", 200, 200, 55);
                     }
+                    else
+                    {
+                    }
                 }));
             }
         }
 
-        private bool checkTile(Tile tileToCheck)
+        public static bool checkTile(Tile tileToCheck)
         {
             if (tileToCheck.active() && (tileToCheck.type == TileID.CorruptGrass || tileToCheck.type == TileID.CorruptIce || tileToCheck.type == TileID.CorruptHardenedSand || tileToCheck.type == TileID.CorruptSandstone || tileToCheck.type == TileID.Ebonstone || tileToCheck.type == TileID.Ebonsand || tileToCheck.type == TileID.EbonstoneBrick
                 || tileToCheck.type == TileID.Crimstone || tileToCheck.type == TileID.Crimsand || tileToCheck.type == TileID.CrimtaneBrick || tileToCheck.type == TileID.CrimsonHardenedSand || tileToCheck.type == TileID.CrimsonSandstone || tileToCheck.type == TileID.FleshBlock || tileToCheck.type == TileID.FleshGrass || tileToCheck.type == TileID.FleshIce
@@ -169,7 +172,7 @@ namespace ControlCorruption
             }
         }
 
-        private void insertClayClump(int x, int y, int size)
+        public static  void insertClayClump(int x, int y, int size)
         {
             int sizeCounter = 0;
             int sizeCounter2 = 0;
@@ -187,7 +190,7 @@ namespace ControlCorruption
             }
         }
 
-        private void makeClayClumps(int Point1, int Point2)
+        public static void makeClayClumps(int Point1, int Point2)
         {
             int worldScanX = Point1;
             int worldScanY = 0;

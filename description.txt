@@ -5,7 +5,12 @@ Crimson will also be surrounded by a layer of clay upon worldgen
 Hardmode ores will auto generate upon entering hardmode. By default 21 altars worth of ore will spawn. Can be changed in config.
 Hardmode ores auto generating can also be turned off in config
 
+This mod adds 1 item, "The Container". It is crafted with 10 clay blocks, and upon usage, it will surround all corruption / crimson / hallow with a layer of clay.
+
 Refer to forum post (Mod home page) for complete explanation of all config options
+
+v0.5.0
+Added The Container
 
 v0.4.2
 Fixed a small mistake I made

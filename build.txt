@@ -1,5 +1,5 @@
 author = Left Click
-version = 0.4.2
+version = 0.5.0
 displayName = Control Corruption / Crimson
 homepage = https://forums.terraria.org/index.php?threads/control-corruption-with-lots-of-clay.70536/
 includeSource = true
